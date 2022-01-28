@@ -10,6 +10,13 @@ app.get("/events", (req, res, next) => {
     const path = './dh-image-log.txt'
     res.json(read(path))
 });
+app.get("/reset", (req, res, next) => {
+    const path = './dh-image-log.txt'
+    fs.writeFile(path, '[]', { flag: 'w' }, function(err) {
+        if (err) throw err;
+        res.json(["ok"])
+    });
+});
 app.post("/event", (req, res, next) => {
     save(req.body)
     res.json(["ok"])
