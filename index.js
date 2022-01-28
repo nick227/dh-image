@@ -21,7 +21,6 @@ function read(path) {
 
 function save(data) {
     const path = './dh-image-log.txt'
-    const current = read(path)
     fs.writeFile(path, data, { flag: 'a' }, function(err) {
         if (err) throw err;
     });
