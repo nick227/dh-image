@@ -1,9 +1,10 @@
 var express = require("express");
 var fs = require("fs");
 var app = express();
+var port = process.env.PORT || 3000
 var bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: false }))
-app.listen(3000, () => {});
+app.listen(port, () => {});
 app.get("/events", (req, res, next) => {
     res.json(["Tony", "Lisa", "Michael", "Ginger", "Food"])
 });
