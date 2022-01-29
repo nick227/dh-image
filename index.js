@@ -1,9 +1,9 @@
 var port = process.env.PORT || 3000;
-var app = express();
 var express = require("express");
+var app = express();
 var bodyParser = require('body-parser')
-var fs = require("fs");
 var NounProject = require('the-noun-project');
+var fs = require("fs");
 //var appKey = '123456789'
 
 app.use(bodyParser.urlencoded({ extended: false }))
