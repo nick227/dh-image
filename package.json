@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "ejs": "^3.1.5",
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "the-noun-project": "^2.1.0"
   },
   "devDependencies": {
     "got": "^11.3.0",
