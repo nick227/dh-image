@@ -3,7 +3,7 @@ var bodyParser = require('body-parser')
 var fs = require("fs");
 var port = process.env.PORT || 3000
 var app = express();
-var appKey = '123456789'
+//var appKey = '123456789'
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use((req, res, next) => {
@@ -19,7 +19,7 @@ app.listen(port, () => {
  ****************************************/
 app.get("/events", (req, res, next) => {
     const path = './dh-image-log.txt'
-    res.json(read(path))
+    res.send(read(path))
 });
 app.get("/reset", (req, res, next) => {
     const path = './dh-image-log.txt'
@@ -37,7 +37,6 @@ app.post("/event", (req, res, next) => {
  * APIS
  ****************************************/
 app.get("/noun", (req, res, next) => {
-    console.log('hi', req.query.limit, req.query.term)
     var NounProject = require('the-noun-project');
     nounProject = new NounProject({
         key: '6fe5896299e4454da024e88e25d06dea',
@@ -47,7 +46,6 @@ app.get("/noun", (req, res, next) => {
         if (!err) {
             console.log(data.icons);
         }
-        console.log('data', data)
         res.json(data)
     });
 });
