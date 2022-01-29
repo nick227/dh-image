@@ -1,8 +1,9 @@
+var port = process.env.PORT || 3000;
+var app = express();
 var express = require("express");
 var bodyParser = require('body-parser')
 var fs = require("fs");
-var port = process.env.PORT || 3000
-var app = express();
+var NounProject = require('the-noun-project');
 //var appKey = '123456789'
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -37,7 +38,6 @@ app.post("/event", (req, res, next) => {
  * APIS
  ****************************************/
 app.get("/noun", (req, res, next) => {
-    var NounProject = require('the-noun-project');
     nounProject = new NounProject({
         key: '6fe5896299e4454da024e88e25d06dea',
         secret: 'a1106661e3e7492785bee89ca506519a'
