@@ -3,9 +3,15 @@ var bodyParser = require('body-parser')
 var fs = require("fs");
 var port = process.env.PORT || 3000
 var app = express();
+var apiKey = 'abcdef123456'
 
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    next()
+})
 app.listen(port, () => {});
+
 app.get("/events", (req, res, next) => {
     const path = './dh-image-log.txt'
     res.json(read(path))
