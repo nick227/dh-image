@@ -3,15 +3,20 @@ var bodyParser = require('body-parser')
 var fs = require("fs");
 var port = process.env.PORT || 3000
 var app = express();
-var apiKey = 'abcdef123456'
+var appKey = '123456789'
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*')
     next()
 })
-app.listen(port, () => {});
+app.listen(port, () => {
+    console.log("Listening on port " + port)
+});
 
+/****************************************
+ * METRICS
+ ****************************************/
 app.get("/events", (req, res, next) => {
     const path = './dh-image-log.txt'
     res.json(read(path))
@@ -26,6 +31,25 @@ app.get("/reset", (req, res, next) => {
 app.post("/event", (req, res, next) => {
     save(req.body)
     res.json(["ok"])
+});
+
+/****************************************
+ * APIS
+ ****************************************/
+app.get("/noun", (req, res, next) => {
+    console.log('hi', req.query.limit, req.query.term)
+    var NounProject = require('the-noun-project');
+    nounProject = new NounProject({
+        key: '6fe5896299e4454da024e88e25d06dea',
+        secret: 'a1106661e3e7492785bee89ca506519a'
+    });
+    nounProject.getIconsByTerm(req.query.term, { limit: req.query.limit }, function(err, data) {
+        if (!err) {
+            console.log(data.icons);
+        }
+        console.log('data', data)
+        res.json(data)
+    });
 });
 
 function read(path) {
