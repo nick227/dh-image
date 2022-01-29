@@ -58,7 +58,9 @@ function save(data) {
     const path = './dh-image-log.txt'
     const cdata = JSON.parse(read(path))
     cdata.push(data)
-    fs.writeFile(path, JSON.stringify(cdata), { flag: 'w' }, function(err) {
+    const val = JSON.stringify(cdata)
+    console.log('val', val)
+    fs.writeFile(path, val, { flag: 'w' }, function(err) {
         if (err) throw err;
     });
 }
