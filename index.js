@@ -1,5 +1,6 @@
 var port = process.env.PORT || 3000;
 var express = require("express");
+var path = require("path");
 var app = express();
 var bodyParser = require('body-parser')
 var NounProject = require('the-noun-project');
@@ -18,9 +19,19 @@ app.listen(port, () => {
 /****************************************
  * METRICS
  ****************************************/
+
 app.get("/events", (req, res, next) => {
-    const path = './dh-image-log.txt'
-    res.send(read(path))
+    const log = 'dh-image-log.txt'
+    fs.readFile(__dirname + log, function(err, data) {
+        if (err) {
+            res.writeHead(404);
+            res.end(JSON.stringify(err));
+            return;
+        }
+        res.writeHead(200);
+        res.end(data);
+    });
+
 });
 app.get("/reset", (req, res, next) => {
     const path = './dh-image-log.txt'
@@ -37,6 +48,7 @@ app.post("/event", (req, res, next) => {
 /****************************************
  * APIS
  ****************************************/
+
 app.get("/noun", (req, res, next) => {
     nounProject = new NounProject({
         key: '6fe5896299e4454da024e88e25d06dea',
