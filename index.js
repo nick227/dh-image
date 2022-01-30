@@ -23,12 +23,6 @@ app.listen(port, () => {
 app.get("/events", (req, res, next) => {
     const log = './dh-image-log.txt'
     fs.readFile(log, function(err, data) {
-        if (err) {
-            res.writeHead(404);
-            res.end(JSON.stringify(err));
-            return;
-        }
-        res.writeHead(200);
         res.send(data);
     });
 
