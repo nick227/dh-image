@@ -22,7 +22,7 @@ app.listen(port, () => {
 
 app.get("/events", (req, res, next) => {
     const log = path.join(__dirname, 'dh-image-log.txt')
-    res.download(log)
+    res.sendFile(log) 
 
 });
 app.get("/reset", (req, res, next) => {
