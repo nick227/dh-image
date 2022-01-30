@@ -21,8 +21,8 @@ app.listen(port, () => {
  ****************************************/
 
 app.get("/events", (req, res, next) => {
-    const log = './dh-image-log.txt'
-    res.sendFile(log)
+    const log = path.join(__dirname, 'dh-image-log.txt')
+    res.download(log)
 
 });
 app.get("/reset", (req, res, next) => {
