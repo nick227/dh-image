@@ -63,7 +63,6 @@ function save(data) {
     const cdata = JSON.parse(read(path))
     cdata.push(data)
     const val = JSON.stringify(cdata)
-    console.log('val', val)
     fs.writeFile(path, val, { flag: 'w' }, function(err) {
         if (err) throw err;
     });
