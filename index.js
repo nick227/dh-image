@@ -21,7 +21,7 @@ app.listen(port, () => {
  ****************************************/
 
 app.get("/events", (req, res, next) => {
-    const log = 'dh-image-log.txt'
+    const log = '/dh-image-log.txt'
     fs.readFile(__dirname + log, function(err, data) {
         if (err) {
             res.writeHead(404);
