@@ -5,6 +5,7 @@ var app = express();
 var bodyParser = require('body-parser')
 var NounProject = require('the-noun-project');
 var fs = require("fs");
+const http = require('http');
 //var appKey = '123456789'
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -22,8 +23,7 @@ app.listen(port, () => {
 
 app.get("/events", (req, res, next) => {
     const log = path.join(__dirname, 'dh-image-log.txt')
-    res.sendFile(log) 
-
+    res.sendFile(log)
 });
 app.get("/reset", (req, res, next) => {
     const path = './dh-image-log.txt'
@@ -33,9 +33,24 @@ app.get("/reset", (req, res, next) => {
     });
 });
 app.post("/event", (req, res, next) => {
-    save(req.body)
+    save(req)
     res.json(["ok"])
 });
+
+function save(req) {
+    const path = './dh-image-log.txt'
+    const data = req.body
+    const cdata = JSON.parse(read(path))
+    data.ip = req.ip
+    cdata.push(data)
+    const val = JSON.stringify(cdata)
+    fs.writeFile(path, val, { flag: 'w' }, function(err) {
+        if (err) throw err;
+    });
+}
+function read(path) {
+    return fs.readFileSync(path, 'utf8')
+}
 
 /****************************************
  * APIS
@@ -53,17 +68,3 @@ app.get("/noun", (req, res, next) => {
         res.json(data)
     });
 });
-
-function read(path) {
-    return fs.readFileSync(path, 'utf8')
-}
-
-function save(data) {
-    const path = './dh-image-log.txt'
-    const cdata = JSON.parse(read(path))
-    cdata.push(data)
-    const val = JSON.stringify(cdata)
-    fs.writeFile(path, val, { flag: 'w' }, function(err) {
-        if (err) throw err;
-    });
-}
