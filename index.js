@@ -29,7 +29,7 @@ app.get("/events", (req, res, next) => {
             return;
         }
         res.writeHead(200);
-        res.end(data);
+        res.end('data4');
     });
 
 });
