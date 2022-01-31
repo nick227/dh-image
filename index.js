@@ -2,10 +2,12 @@ var port = process.env.PORT || 3000;
 var express = require("express");
 var path = require("path");
 var app = express();
+var request = require("request")
 var bodyParser = require('body-parser')
 var NounProject = require('the-noun-project');
 var fs = require("fs");
 const http = require('http');
+const https = require('https');
 //var appKey = '123456789'
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -48,6 +50,7 @@ function save(req) {
         if (err) throw err;
     });
 }
+
 function read(path) {
     return fs.readFileSync(path, 'utf8')
 }
@@ -68,3 +71,48 @@ app.get("/noun", (req, res, next) => {
         res.json(data)
     });
 });
+app.get("/flatIcon", (req, res, next) => {
+    const options = {
+        url: 'https://api.flaticon.com/v2/app/authentication',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            apikey: '814f937125367cee6b1945e5d15b8035b1deb15a'
+        })
+    };
+
+    request.post(options, (err, res2, body) => {
+        if (err) {
+            return console.log(err);
+        }
+        body = JSON.parse(body)
+        if (body.hasOwnProperty('data') && body.data.hasOwnProperty('token')) {
+            const token = body.data.token
+            getFlatIcon(req.query, token, function(data) {
+                res.json(data)
+            })
+        }
+    });
+});
+
+function getFlatIcon(query, token, callback) {
+    const options2 = {
+        url: 'https://api.flaticon.com/v3/search/icons/priority',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: '?' + getParams(query)
+    }
+    request.get(options2, (err, res, body) => {
+        if (err) {
+            return console.log('2'+err);
+        }
+        callback(body)
+    })
+}
+function getParams(params) {
+  return Object.entries(params).map(entry => entry.join("=")).join("&");
+}
