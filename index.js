@@ -98,13 +98,14 @@ app.get("/flatIcon", (req, res, next) => {
 });
 
 function getFlatIcon(query, token, callback) {
+    console.log('?' + getParams(query))
     const options2 = {
-        url: 'https://api.flaticon.com/v3/search/icons/priority',
+        url: 'https://api.flaticon.com/v3/search/icons/priority?' + getParams(query),
         headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer ' + token
-        },
-        body: '?' + getParams(query)
+        }/*,
+        body: '?' + getParams(query)*/
     }
     request.get(options2, (err, res, body) => {
         if (err) {
