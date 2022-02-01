@@ -1,24 +1,19 @@
-const port = process.env.PORT || 3000;
-const express = require("express");
-const path = require("path");
-const app = express();
-
-const request = require("request")
-const https = require("https")
-const bodyParser = require('body-parser')
-const NounProject = require('the-noun-project');
-const fs = require("fs");
-
+var port = process.env.PORT || 3000;
+var express = require("express");
+var path = require("path");
+var app = express();
+var request = require("request")
+var https = require("https")
+var bodyParser = require('body-parser')
+var NounProject = require('the-noun-project');
+var fs = require("fs");
 const mysql = require('mysql');
-const cors = require('cors');
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*')
     next()
 })
-app.use(cors())
-
 app.listen(port, () => {
     console.log("Listening on port " + port)
 });
@@ -38,16 +33,22 @@ const db = {
         return mysql.createConnection(this.cx);
     },
     insert: async function(obj, callback) {
-        const data = JSON.parse(obj.data)
-        const provider = obj.type === 'image' ? data.provider : ''
-        const conx = this.connect()
-        let q = `INSERT INTO event (ip, data, type, provider, timestamp) VALUES ("${obj.ip}", "${escape(obj.data)}", "${obj.type}", "${provider}", "${obj.date}" ) `
-    
-        await conx.query(q, function(err, res, fields) {
-            if(err){ console.log(err) }
-            conx.end()
+        try {
+            const data = JSON.parse(obj.data)
+            const provider = obj.type === 'image' ? data.provider : ''
+            const conx = this.connect()
+            let q = `INSERT INTO event (ip, data, type, provider, timestamp) VALUES ("${obj.ip}", "${escape(obj.data)}", "${obj.type}", "${provider}", "${obj.date}" ) `
+
+            await conx.query(q, function(err, res, fields) {
+                if (err) { console.log(err) }
+                conx.end()
+                callback(res)
+            })
+
+        } catch (err) {
+            console.log(err, res)
             callback(res)
-        })
+        }
     }
 }
 
@@ -68,7 +69,7 @@ app.get("/reset", (req, res, next) => {
     });
 });
 app.post("/event", (req, res, next) => {
-    db.insert(req.body, function(data){
+    db.insert(req.body, function(data) {
         res.send(data)
     })
 });
