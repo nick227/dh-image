@@ -40,7 +40,7 @@ const db = {
     insert: async function(req, callback) {
         try {
             const conx = this.connect()
-            const q = `INSERT INTO event (ip, data, type, timestamp) VALUES ("${req.ip}", "${escape(req.body.data)}", "${req.body.type}", "${req.body.date}" ) `
+            const q = `INSERT INTO event (ip, data, type) VALUES ("${req.ip}", "${escape(req.body.data)}", "${req.body.type}" ) `
             await conx.query(q, function(err, res, fields) {
                 if (err) { console.log(err) }
                 callback(res)
