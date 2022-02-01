@@ -76,12 +76,12 @@ const db = {
 app.get("/events", (req, res, next) => {
     res.header("Content-Type",'application/json')
     db.get(function(data) {
-        res.send(data)
+        res.send(JSON.stringify(data, null, 2) + '\n')
     })
 });
 app.post("/event", (req, res, next) => {
     db.insert(req, function(data) {
-        res.send(JSON.stringify(data, null, 2) + '\n')
+        res.send(data)
     })
 });
 
