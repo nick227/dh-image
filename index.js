@@ -78,13 +78,6 @@ app.get("/events", (req, res, next) => {
         res.send(data)
     })
 });
-app.get("/reset", (req, res, next) => {
-    const path = './dh-image-log.txt'
-    fs.writeFile(path, '[]', { flag: 'w' }, function(err) {
-        if (err) throw err;
-        res.json(["ok"])
-    });
-});
 app.post("/event", (req, res, next) => {
     db.insert(req, function(data) {
         res.send(data)
