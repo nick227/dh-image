@@ -46,7 +46,7 @@ const db = {
             })
 
         } catch (err) {
-            console.log(err, res)
+            console.log(err)
             callback(res)
         }
     }
