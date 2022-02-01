@@ -39,17 +39,13 @@ const db = {
     },
     insert: async function(obj, callback) {
         try {
-            console.log('aa', typeof obj.data)
-            const data = JSON.parse(obj.data)
-            const provider = obj.type === 'image' ? data.provider : ''
             const conx = this.connect()
-            let q = `INSERT INTO event (ip, data, type, provider, timestamp) VALUES ("${obj.ip}", "${escape(obj.data)}", "${obj.type}", "${provider}", "${obj.date}" ) `
-console.log('q', q)
+            let q = `INSERT INTO event (ip, data, type, timestamp) VALUES ("${obj.ip}", "${escape(obj.data)}", "${obj.type}", "${obj.date}" ) `
             await conx.query(q, function(err, res, fields) {
                 if (err) { console.log(err) }
-                conx.end()
                 callback(res)
             })
+            conx.end()
 
         } catch (err) {
             console.log(err)
