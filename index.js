@@ -55,7 +55,7 @@ const db = {
     get: async function(callback) {
         try {
             const conx = this.connect()
-            const q = 'SELECT * FROM event'
+            const q = 'SELECT * FROM event ORDER BY date DESC'
             await conx.query(q, function(err, res, fields) {
                 callback(res)
             })
