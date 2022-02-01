@@ -1,19 +1,26 @@
-var port = process.env.PORT || 3000;
-var express = require("express");
-var path = require("path");
-var app = express();
-var request = require("request")
-var https = require("https")
-var bodyParser = require('body-parser')
-var NounProject = require('the-noun-project');
-var fs = require("fs");
+const port = process.env.PORT || 3000;
+const express = require("express");
+const path = require("path");
+const app = express();
+
+const request = require("request")
+const https = require("https")
+const bodyParser = require('body-parser')
+const NounProject = require('the-noun-project');
+const fs = require("fs");
+
 const mysql = require('mysql');
+const cors = require('cors');
 
 app.use(bodyParser.urlencoded({ extended: false }))
+/*
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*')
     next()
 })
+*/
+app.use(cors())
+
 app.listen(port, () => {
     console.log("Listening on port " + port)
 });
