@@ -37,10 +37,10 @@ const db = {
     connect: function() {
         return mysql.createConnection(this.cx);
     },
-    insert: async function(obj, callback) {
+    insert: async function(req, callback) {
         try {
             const conx = this.connect()
-            let q = `INSERT INTO event (ip, data, type, timestamp) VALUES ("${obj.ip}", "${escape(obj.data)}", "${obj.type}", "${obj.date}" ) `
+            let q = `INSERT INTO event (ip, data, type, timestamp) VALUES ("${req.ip}", "${escape(req.body.data)}", "${req.body.type}", "${req.body.date}" ) `
             await conx.query(q, function(err, res, fields) {
                 if (err) { console.log(err) }
                 callback(res)
@@ -71,7 +71,7 @@ app.get("/reset", (req, res, next) => {
     });
 });
 app.post("/event", (req, res, next) => {
-    db.insert(req.body, function(data) {
+    db.insert(req, function(data) {
         res.send(data)
     })
 });
