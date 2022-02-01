@@ -9,6 +9,9 @@ var NounProject = require('the-noun-project');
 var fs = require("fs");
 const mysql = require('mysql');
 
+const cors = require('cors');
+app.use(cors())
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*')
