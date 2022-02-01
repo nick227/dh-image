@@ -40,7 +40,7 @@ const db = {
     insert: async function(req, callback) {
         try {
             const conx = this.connect()
-            let q = `INSERT INTO event (ip, data, type, timestamp) VALUES ("${req.ip}", "${escape(req.body.data)}", "${req.body.type}", "${req.body.date}" ) `
+            const q = `INSERT INTO event (ip, data, type, timestamp) VALUES ("${req.ip}", "${escape(req.body.data)}", "${req.body.type}", "${req.body.date}" ) `
             await conx.query(q, function(err, res, fields) {
                 if (err) { console.log(err) }
                 callback(res)
@@ -51,6 +51,20 @@ const db = {
             console.log(err)
             callback(err)
         }
+    },
+    get: async function(callback) {
+        try {
+            const conx = this.connect()
+            const q = 'SELECT * FROM event'
+            await conx.query(q, function(err, res, fields) {
+                callback(res)
+            })
+
+        } catch (err) {
+            console.log(err)
+            callback(err)
+        }
+
     }
 }
 
@@ -60,8 +74,9 @@ const db = {
  ****************************************/
 
 app.get("/events", (req, res, next) => {
-    const log = path.join(__dirname, 'dh-image-log.txt')
-    res.sendFile(log)
+    db.get(function(data) {
+        res.send(data)
+    })
 });
 app.get("/reset", (req, res, next) => {
     const path = './dh-image-log.txt'
@@ -76,21 +91,6 @@ app.post("/event", (req, res, next) => {
     })
 });
 
-function save(req) {
-    const path = './dh-image-log.txt'
-    const data = req.body
-    const cdata = JSON.parse(read(path))
-    data.ip = req.ip
-    cdata.push(data)
-    const val = JSON.stringify(cdata)
-    fs.writeFile(path, val, { flag: 'w' }, function(err) {
-        if (err) throw err;
-    });
-}
-
-function read(path) {
-    return fs.readFileSync(path, 'utf8')
-}
 
 /****************************************
  * APIS
