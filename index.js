@@ -52,7 +52,7 @@ const db = {
 
         } catch (err) {
             console.log(err)
-            callback(res)
+            callback(err)
         }
     }
 }
