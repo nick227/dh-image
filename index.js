@@ -53,10 +53,12 @@ const db = {
             callback(err)
         }
     },
-    get: async function(callback) {
+    get: async function(callback, query) {
         try {
             const conx = this.connect()
-            const q = 'SELECT * FROM event ORDER BY timestamp DESC'
+            const q = typeof query === 'string' ? query : 'SELECT * FROM event ORDER BY timestamp DESC'
+            console.log('query', query)
+            console.log('q', q)
             await conx.query(q, function(err, res, fields) {
                 callback(res)
             })
@@ -78,21 +80,26 @@ function generateQuery(req){
  * METRICS
  ****************************************/
 
-app.get("/events", (req, res, next) => {
-    res.header("Content-Type",'application/json')
-    db.get(function(data) {
-        res.send(JSON.stringify(data, null, 2) + '\n')
-    })
-});
 app.post("/event", (req, res, next) => {
     db.insert(req, function(data) {
         res.send(data)
     })
 });
+app.get("/events", (req, res, next) => {
+    res.header("Content-Type",'application/json')
+    db.get(function(data) {
+        res.send(JSON.stringify(data, null, 2) + '\n')
+    }, false)
+});
+app.get("/trending", (req, res, next) => {
+    db.get(function(data) {
+        res.send(data)
+    }, 'SELECT * FROM event WHERE type="image" ORDER BY timestamp DESC LIMIT 5')
+});
 
 
 /****************************************
- * APIS
+ * IMAGE APIS
  ****************************************/
 
 //const ImgurClient = 'a13b61f8c0ddf4e'
