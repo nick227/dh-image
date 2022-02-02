@@ -54,8 +54,8 @@ const db = {
         }
     },
     get: async function(callback, query) {
-        try {
             const conx = this.connect()
+        try {
             const q = typeof query === 'string' ? query : 'SELECT * FROM event ORDER BY timestamp DESC'
             console.log('query', query)
             console.log('q', q)
@@ -67,6 +67,7 @@ const db = {
             console.log(err)
             callback(err)
         }
+            conx.end()
 
     }
 }
