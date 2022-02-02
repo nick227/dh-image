@@ -94,7 +94,7 @@ app.get("/events", (req, res, next) => {
 app.get("/trending", (req, res, next) => {
     db.get(function(data) {
         res.send(data)
-    }, 'SELECT DISTINCT * FROM event WHERE type="image" ORDER BY timestamp DESC LIMIT 5')
+    }, 'SELECT * FROM event GROUP BY thumb HAVING COUNT(*) = 1 WHERE type="image" ORDER BY timestamp DESC LIMIT 5')
 });
 
 
