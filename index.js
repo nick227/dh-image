@@ -41,6 +41,7 @@ const db = {
         try {
             const conx = this.connect()
             const q = generateQuery(req)
+            console.log('q', q)
             await conx.query(q, function(err, res, fields) {
                 if (err) { callback(err) }
                 callback(res)
