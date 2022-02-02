@@ -43,7 +43,7 @@ const db = {
             const q = generateQuery(req)
             console.log('q', q)
             await conx.query(q, function(err, res, fields) {
-                if (err) { callback(err) }
+                if (err) { console.log(err) }
                 callback(res)
             })
             conx.end()
@@ -69,10 +69,9 @@ const db = {
     }
 }
 function generateQuery(req){
-    //`INSERT INTO event (ip, data, type) VALUES ("${req.ip}", "${escape(req.body.data)}", "${req.body.type}" ) `
     const keys = Object.keys(req.body)
     const vals = Object.values(req.body)
-    return 'INSERT INTO event ('+ keys.join(', ') +') VALUES ("'+ vals.join('", "') +'")'
+    return 'INSERT INTO event (ip, '+ keys.join(', ') +') VALUES ("'+req.ip+'", "'+ vals.join('", "') +'")'
 }
 
 /****************************************
