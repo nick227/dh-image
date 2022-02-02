@@ -41,7 +41,6 @@ const db = {
         try {
             const conx = this.connect()
             const q = generateQuery(req)
-            console.log('q', q)
             await conx.query(q, function(err, res, fields) {
                 if (err) { console.log(err) }
                 callback(res)
@@ -53,28 +52,51 @@ const db = {
             callback(err)
         }
     },
-    get: async function(callback, query) {
-            const conx = this.connect()
-        try {
-            const q = typeof query === 'string' ? query : 'SELECT * FROM event ORDER BY timestamp DESC'
-            console.log('query', query)
-            console.log('q', q)
-            await conx.query(q, function(err, res, fields) {
-                callback(res)
-            })
+    get: function(callback, key) {
+        const queries = {
+            trending: async function() {
+                const res = {
+                    images: [],
+                    terms: []
+                }
+                const qs = ['SELECT DISTINCT thumb, term, full FROM event WHERE type="image" ORDER BY timestamp DESC LIMIT 5', 
+                            'SELECT term, COUNT(DISTINCT(term)) as count from event GROUP BY term ORDER BY count DESC LIMIT 5']
 
-        } catch (err) {
-            console.log(err)
-            callback(err)
+                doSelect(qs[0], function(res1) {
+                    res.images = res1
+                    doSelect(qs[1], function(res2){
+                        res.terms = res2
+                        callback(res)
+                    })
+                })
+            }
         }
-            conx.end()
+        if (!queries[key]) {
+            doSelect('SELECT * FROM event ORDER BY timestamp DESC', callback)
+        } else {
+            queries[key]()
+        }
 
     }
 }
-function generateQuery(req){
+
+function doSelect(q, callback) {
+    try {
+        const conx = db.connect()
+        conx.query(q, function(err, res, fields) {
+            callback(res)
+        })
+        conx.end()
+    } catch (err) {
+        console.log(err)
+        callback(err)
+    }
+}
+
+function generateQuery(req) {
     const keys = Object.keys(req.body)
     const vals = Object.values(req.body)
-    return 'INSERT INTO event (ip, '+ keys.join(', ') +') VALUES ("'+req.ip+'", "'+ vals.join('", "') +'")'
+    return 'INSERT INTO event (ip, ' + keys.join(', ') + ') VALUES ("' + req.ip + '", "' + vals.join('", "') + '")'
 }
 
 /****************************************
@@ -87,7 +109,7 @@ app.post("/event", (req, res, next) => {
     })
 });
 app.get("/events", (req, res, next) => {
-    res.header("Content-Type",'application/json')
+    res.header("Content-Type", 'application/json')
     db.get(function(data) {
         res.send(JSON.stringify(data, null, 2) + '\n')
     }, false)
@@ -95,7 +117,7 @@ app.get("/events", (req, res, next) => {
 app.get("/trending", (req, res, next) => {
     db.get(function(data) {
         res.send(data)
-    }, 'SELECT DISTINCT thumb, term, full FROM event WHERE type="image" ORDER BY timestamp DESC LIMIT 5')
+    }, 'trending')
 });
 
 
