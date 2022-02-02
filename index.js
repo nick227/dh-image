@@ -59,7 +59,7 @@ const db = {
                     images: [],
                     terms: []
                 }
-                const qs = ['SELECT DISTINCT thumb, term, full FROM event WHERE type="image" ORDER BY timestamp DESC LIMIT 5', 
+                const qs = ['SELECT thumb, term, full FROM event WHERE type="image" GROUP BY thumb ORDER BY timestamp DESC LIMIT 5', 
                             'SELECT term, COUNT(DISTINCT(term)) as count from event GROUP BY term ORDER BY count DESC LIMIT 5']
 
                 doSelect(qs[0], function(res1) {
