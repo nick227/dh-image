@@ -40,9 +40,9 @@ const db = {
     insert: async function(req, callback) {
         try {
             const conx = this.connect()
-            const q = `INSERT INTO event (ip, data, type) VALUES ("${req.ip}", "${escape(req.body.data)}", "${req.body.type}" ) `
+            const q = generateQuery(req)
             await conx.query(q, function(err, res, fields) {
-                if (err) { console.log(err) }
+                if (err) { callback(err) }
                 callback(res)
             })
             conx.end()
@@ -67,7 +67,12 @@ const db = {
 
     }
 }
-
+function generateQuery(req){
+    //`INSERT INTO event (ip, data, type) VALUES ("${req.ip}", "${escape(req.body.data)}", "${req.body.type}" ) `
+    const keys = Object.keys(req.body)
+    const vals = Object.values(req.body)
+    return 'INSERT INTO event ('+ keys.join(', ') +') VALUES ("'+ vals.join('", "') +'")'
+}
 
 /****************************************
  * METRICS
