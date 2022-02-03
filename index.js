@@ -184,7 +184,7 @@ function getFlatIcon(query, token, callback) {
     }
     request.get(options2, (err, res, body) => {
         if (err) {
-            return res.send(err);
+        callback(err)
         }
         callback(body)
     })
