@@ -168,6 +168,9 @@ app.get("/flatIcon", (req, res, next) => {
             getFlatIcon(req.query, token, function(data) {
                 res.json(data)
             })
+        }else{
+                res.send([])
+
         }
     });
 });
