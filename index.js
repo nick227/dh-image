@@ -59,12 +59,13 @@ const db = {
                     images: [],
                     terms: []
                 }
-                const qs = ['SELECT thumb, term, full FROM event WHERE type="image" GROUP BY thumb ORDER BY timestamp DESC LIMIT 5', 
-                            'SELECT term, COUNT(DISTINCT(term)) as count from event GROUP BY term ORDER BY count DESC LIMIT 5']
+                const qs = ['SELECT thumb, term, full FROM event WHERE type="image" GROUP BY thumb ORDER BY timestamp DESC LIMIT 5',
+                    'SELECT term, COUNT(DISTINCT(term)) as count from event GROUP BY term ORDER BY count DESC LIMIT 5'
+                ]
 
                 doSelect(qs[0], function(res1) {
                     res.images = res1
-                    doSelect(qs[1], function(res2){
+                    doSelect(qs[1], function(res2) {
                         res.terms = res2
                         callback(res)
                     })
@@ -159,19 +160,24 @@ app.get("/flatIcon", (req, res, next) => {
     };
 
     request.post(options, (err, res2, body) => {
-        if (err) {
-            res.send(err)
-        }
-        body = JSON.parse(body)
-        if (body.hasOwnProperty('data') && body.data.hasOwnProperty('token')) {
-            const token = body.data.token
-            getFlatIcon(req.query, token, function(data) {
-                res.json(data)
-            })
-        }else{
-                res.send([])
+        try {
+            if (err) {
+                res.send(err)
+            }
+            body = JSON.parse(body)
+            if (body.hasOwnProperty('data') && body.data.hasOwnProperty('token')) {
+                const token = body.data.token
+                getFlatIcon(req.query, token, function(data) {
+                    const dataObj = JSON.parse(data)
+                    dataObj.data = dataObj.data.slice(0, req.query.limit)
+                    res.json(dataObj)
+                })
+            }
 
-        }
+        } catch (err) {
+                    console.log(err)
+                    res.send(err)
+                }
     });
 });
 
@@ -187,7 +193,7 @@ function getFlatIcon(query, token, callback) {
     }
     request.get(options2, (err, res, body) => {
         if (err) {
-        callback(err)
+            return res.send(err);
         }
         callback(body)
     })
