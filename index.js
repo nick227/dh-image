@@ -9,6 +9,7 @@ var NounProject = require('the-noun-project');
 var fs = require("fs");
 const mysql = require('mysql');
 
+
 const cors = require('cors');
 app.use(cors())
 
@@ -175,9 +176,9 @@ app.get("/flatIcon", (req, res, next) => {
             }
 
         } catch (err) {
-                    console.log(err)
-                    res.send(err)
-                }
+            console.log(err)
+            res.send(err)
+        }
     });
 });
 
@@ -188,12 +189,10 @@ function getFlatIcon(query, token, callback) {
             'Accept': 'application/json',
             'Authorization': 'Bearer ' + token
         }
-        /*,
-                body: '?' + getParams(query)*/
     }
     request.get(options2, (err, res, body) => {
         if (err) {
-            return res.send(err);
+            callback(err);
         }
         callback(body)
     })
@@ -202,3 +201,28 @@ function getFlatIcon(query, token, callback) {
 function getParams(params) {
     return Object.entries(params).map(entry => entry.join("=")).join("&");
 }
+
+
+/****************************************
+ * WORDS
+ ****************************************/
+
+app.get("/synonyms", (req, res, next) => {
+
+    getSynonyms(req.query.term, function(data){
+        res.json(data)
+    })
+
+    function getSynonyms(term, callback) {
+        const biglabskey = '045145eebbf50c7e68cad637c21e6608'
+        const options = {
+            url: 'https://words.bighugelabs.com/api/2/045145eebbf50c7e68cad637c21e6608/' + req.query.term + '/json'
+        }
+        request.get(options, (err, res, body) => {
+            if (err) {
+                callback(err);
+            }
+            callback(body)
+        })
+    }
+})
