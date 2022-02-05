@@ -74,9 +74,10 @@ const db = {
                 const keys = [['recent', 'images'], ['recent', 'terms'], ['top', 'images'], ['top', 'terms']]
                 for(var i = 0, length1 = qs.length; i < length1; i++){
                     let q = qs[i]
+                    console.log(q)
                     makeRequest(q, i)
                 }
-                function async makeRequest(q, i){
+                async function makeRequest(q, i){
                     await doSelect(q, function(data){
                         res[keys[i][0]][keys[i][1]] = data
                         if(i === qs.length-1){
