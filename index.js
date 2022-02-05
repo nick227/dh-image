@@ -8,8 +8,11 @@ var bodyParser = require('body-parser')
 var NounProject = require('the-noun-project');
 var fs = require("fs");
 const mysql = require('mysql');
+
+
 const cors = require('cors');
 app.use(cors())
+
 app.use(bodyParser.urlencoded({ extended: false }))
 /*
 app.use((req, res, next) => {
@@ -73,8 +76,8 @@ const db = {
                     let q = qs[i]
                     makeRequest(q, i)
                 }
-                function makeRequest(q, i){
-                    doSelect(q, function(data){
+                function async makeRequest(q, i){
+                    await doSelect(q, function(data){
                         res[keys[i][0]][keys[i][1]] = data
                         if(i === qs.length-1){
                             callback(res)
@@ -88,6 +91,7 @@ const db = {
         } else {
             queries[key]()
         }
+
     }
 }
 
