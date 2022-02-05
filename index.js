@@ -57,20 +57,33 @@ const db = {
         const queries = {
             trending: async function() {
                 const res = {
-                    images: [],
-                    terms: []
+                    recent: {
+                        images: [],
+                        terms: []
+                    }, 
+                    top: {
+                        images: [],
+                        terms: []
+                    }
                 }
                 const qs = ['SELECT thumb, term, full FROM event WHERE type="image" GROUP BY thumb ORDER BY timestamp DESC LIMIT 5',
-                    'SELECT term, COUNT(term) as count from event GROUP BY term ORDER BY timestamp DESC LIMIT 5'
+                    'SELECT term, COUNT(term) as count from event WHERE type="search" GROUP BY term ORDER BY timestamp DESC LIMIT 5',
+                    'SELECT thumb, full, COUNT(thumb) as count FROM event WHERE type="image" GROUP BY thumb ORDER BY count DESC LIMIT 5',
+                    'SELECT term, COUNT(term) as count from event WHERE type="search" GROUP BY term ORDER BY count DESC LIMIT 5'
                 ]
-
-                doSelect(qs[0], function(res1) {
-                    res.images = res1
-                    doSelect(qs[1], function(res2) {
-                        res.terms = res2
-                        callback(res)
+                const keys = [['recent', 'images'], ['recent', 'terms'], ['top', 'images'], ['top', 'terms']]
+                for(var i = 0, length1 = qs.length; i < length1; i++){
+                    let q = qs[i]
+                    makeRequest(q, i)
+                }
+                function makeRequest(q, i){
+                    doSelect(q, function(data){
+                        res[keys[i][0]][keys[i][1]] = data
+                        if(i === qs.length-1){
+                            callback(res)
+                        }
                     })
-                })
+                }
             }
         }
         if (!queries[key]) {
@@ -82,10 +95,10 @@ const db = {
     }
 }
 
-function doSelect(q, callback) {
+async function doSelect(q, callback) {
     try {
         const conx = db.connect()
-        conx.query(q, function(err, res, fields) {
+        await conx.query(q, function(err, res, fields) {
             callback(res)
         })
         conx.end()
@@ -120,6 +133,11 @@ app.get("/trending", (req, res, next) => {
     db.get(function(data) {
         res.send(data)
     }, 'trending')
+});
+app.get("/top", (req, res, next) => {
+    db.get(function(data) {
+        res.send(data)
+    }, 'top')
 });
 
 
