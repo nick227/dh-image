@@ -87,19 +87,23 @@ const db = {
                 function makeRequest(q, counter) {
                     fns.push(function(next) {
                         doSelect(q, function(data) {
-                            resObj[keys[counter][0]][keys[counter][1]] = data
+                            //resObj[keys[counter][0]][keys[counter][1]] = data
                             results.push(data)
                             next()
                         })
                     })
                 }
                 async.series(fns).then(function() {
+                    resObj.recent.images = results[0]
+                    resObj.recent.terms = results[1]
+                    resObj.top.images = results[2]
+                    resObj.top.terms = results[3]
                     callback(resObj)
                 })
             }
         }
         if (!queries[key]) {
-            doSelect('SELECT * FROM event ORDER BY timestamp DESC', callback)
+            doSelect('SELECT * FROM event ORDER BY timestamp DESC LIMIT 5', callback)
         } else {
             queries[key]()
         }
@@ -107,10 +111,10 @@ const db = {
     }
 }
 
-async function doSelect(q, callback) {
+function doSelect(q, callback) {
     try {
         const conx = db.connect()
-        await conx.query(q, function(err, res, fields) {
+        conx.query(q, function(err, res, fields) {
             callback(res)
         })
         conx.end()
