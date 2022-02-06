@@ -1,12 +1,13 @@
-var port = process.env.PORT || 3000;
-var express = require("express");
-var path = require("path");
-var app = express();
-var request = require("request")
-var https = require("https")
-var bodyParser = require('body-parser')
-var NounProject = require('the-noun-project');
-var fs = require("fs");
+const port = process.env.PORT || 3000;
+const express = require("express");
+const path = require("path");
+const app = express();
+const request = require("request")
+const https = require("https")
+const async = require('async')
+const bodyParser = require('body-parser')
+const NounProject = require('the-noun-project');
+const fs = require("fs");
 const mysql = require('mysql');
 
 
@@ -56,35 +57,45 @@ const db = {
     get: function(callback, key) {
         const queries = {
             trending: async function() {
-                const res = {
-                    recent: {
-                        images: [],
-                        terms: []
-                    }, 
-                    top: {
-                        images: [],
-                        terms: []
-                    }
-                }
+                const results = []
                 const qs = ['SELECT thumb, term, full FROM event WHERE type="image" GROUP BY thumb ORDER BY timestamp DESC LIMIT 5',
                     'SELECT term, COUNT(term) as count from event WHERE type="search" GROUP BY term ORDER BY timestamp DESC LIMIT 5',
                     'SELECT thumb, full, COUNT(thumb) as count FROM event WHERE type="image" GROUP BY thumb ORDER BY count DESC LIMIT 5',
                     'SELECT term, COUNT(term) as count from event WHERE type="search" GROUP BY term ORDER BY count DESC LIMIT 5'
                 ]
-                const keys = [['recent', 'images'], ['recent', 'terms'], ['top', 'images'], ['top', 'terms']]
-                for(var i = 0, length1 = qs.length; i < length1; i++){
-                    let q = qs[i]
-                    console.log(q)
-                    makeRequest(q, i)
+                const keys = [
+                    ['recent', 'images'],
+                    ['recent', 'terms'],
+                    ['top', 'images'],
+                    ['top', 'terms']
+                ]
+                const resObj = {
+                    recent: {
+                        images: [],
+                        terms: []
+                    },
+                    top: {
+                        images: [],
+                        terms: []
+                    }
                 }
-                async function makeRequest(q, i){
-                    await doSelect(q, function(data){
-                        res[keys[i][0]][keys[i][1]] = data
-                        if(i === qs.length-1){
-                            callback(res)
-                        }
+                const fns = []
+                for (var i = 0, length1 = qs.length; i < length1; i++) {
+                    makeRequest(qs[i], i)
+                }
+
+                function makeRequest(q, counter) {
+                    fns.push(function(next) {
+                        doSelect(q, function(data) {
+                            resObj[keys[counter][0]][keys[counter][1]] = data
+                            results.push(data)
+                            next()
+                        })
                     })
                 }
+                async.series(fns).then(function() {
+                    callback(resObj)
+                })
             }
         }
         if (!queries[key]) {
@@ -135,11 +146,6 @@ app.get("/trending", (req, res, next) => {
         res.send(data)
     }, 'trending')
 });
-app.get("/top", (req, res, next) => {
-    db.get(function(data) {
-        res.send(data)
-    }, 'top')
-});
 
 
 /****************************************
@@ -179,7 +185,7 @@ app.get("/flatIcon", (req, res, next) => {
         })
     };
 
-    request.post(options, (err, res2, body) => {
+    request.post(options, (err, results, body) => {
         try {
             if (err) {
                 res.send(err)
@@ -228,7 +234,7 @@ function getParams(params) {
 
 app.get("/synonyms", (req, res, next) => {
 
-    getSynonyms(req.query.term, function(data){
+    getSynonyms(req.query.term, function(data) {
         res.json(data)
     })
 
