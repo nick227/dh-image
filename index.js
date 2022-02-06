@@ -58,9 +58,9 @@ const db = {
         const queries = {
             trending: async function() {
                 const results = []
-                const qs = ['SELECT thumb, term, full FROM event WHERE type="image" GROUP BY thumb ORDER BY timestamp DESC LIMIT 5',
+                const qs = ['SELECT thumb, term, full FROM event WHERE type="image" GROUP BY thumb ORDER BY timestamp DESC LIMIT 6',
                     'SELECT term, COUNT(term) as count from event WHERE type="search" GROUP BY term ORDER BY timestamp DESC LIMIT 5',
-                    'SELECT thumb, term, full, COUNT(thumb) as count FROM event WHERE type="image" GROUP BY thumb ORDER BY count DESC LIMIT 12',
+                    'SELECT thumb, term, full, COUNT(thumb) as count FROM event WHERE type="image" GROUP BY thumb ORDER BY count DESC LIMIT 6',
                     'SELECT term, COUNT(term) as count from event WHERE type="search" GROUP BY term ORDER BY count DESC LIMIT 5'
                 ]
                 const keys = [
