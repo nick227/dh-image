@@ -171,8 +171,9 @@ app.get("/noun", (req, res, next) => {
     nounProject.getIconsByTerm(req.query.term, { limit: req.query.limit }, function(err, data) {
         if (err) {
             res.send(err)
+        }else{
+            res.json(data)
         }
-        res.json(data)
     });
 });
 
