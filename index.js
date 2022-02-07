@@ -54,8 +54,12 @@ const db = {
             callback(err)
         }
     },
-    get: function(callback, key) {
+    get: function(callback, key, req) {
         const queries = {
+            recent: async function() {
+                const q = `SELECT * FROM event WHERE ip = "${req.ip}"`
+                doSelect(q, callback)
+            },
             trending: async function() {
                 const results = []
                 const qs = ['SELECT thumb, term, full FROM event WHERE type="image" GROUP BY thumb ORDER BY timestamp DESC LIMIT 6',
@@ -149,6 +153,11 @@ app.get("/trending", (req, res, next) => {
     db.get(function(data) {
         res.send(data)
     }, 'trending')
+});
+app.get("/recent/mine", (req, res, next) => {
+    db.get(function(data) {
+        res.send(data)
+    }, 'recent', req)
 });
 
 
