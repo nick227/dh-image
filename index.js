@@ -119,6 +119,7 @@ function doSelect(q, callback) {
     try {
         const conx = db.connect()
         conx.query(q, function(err, res, fields) {
+            console.log(err)
             callback(res)
         })
         conx.end()
