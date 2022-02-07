@@ -57,7 +57,7 @@ const db = {
     get: function(callback, key, req) {
         const queries = {
             recent: async function() {
-                const q = `SELECT * FROM event WHERE ip = "${req.ip}"`
+                const q = `SELECT * FROM event WHERE ip = "${req.ip}" ORDER BY timestamp DESC`
                 doSelect(q, callback)
             },
             trending: async function() {
