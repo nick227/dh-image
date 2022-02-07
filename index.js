@@ -57,7 +57,7 @@ const db = {
     get: function(callback, key, req) {
         const queries = {
             recent: async function() {
-                const q = `SELECT *, count(term) AS termCount, count(thumb) AS thumbCount FROM event WHERE ip = "${req.ip}" AND type="image" GROUP BY thumb ORDER BY timestamp DESC LIMIT 6`
+                const q = `SELECT * FROM event WHERE ip = "${req.ip}" AND type="image" GROUP BY thumb ORDER BY timestamp DESC LIMIT 6`
                 console.log(q)
                 doSelect(q, callback)
             },
