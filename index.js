@@ -155,7 +155,7 @@ app.get("/trending", (req, res, next) => {
         res.send(data)
     }, 'trending')
 });
-app.get("/recent/mine", (req, res, next) => {
+app.get("/recent", (req, res, next) => {
     db.get(function(data) {
         res.send(data)
     }, 'recent', req)
