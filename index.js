@@ -182,6 +182,33 @@ app.get("/top/:limit", (req, res, next) => {
 //id: 317e151a0c260fd
 //sec: f6f1dc43da9c84581da33f73f85ca3f1aff308b4
 
+//icon8 project
+app.get("/icon8/:key", (req, res, next) => {
+    const private_keys = { icons: '7c6b363c45b217cfd6fe280f4de7861691550354', 
+                   vectors: 'lDKfyPRkhwP9Zvx9iGuJOVXXIaotTU6umndAJwNF', 
+                   photos: 'Zy9WRJFistH6N5vQjKkoRSQjp7QCCpZx2eGfDUHe' , 
+                   music: 'Z0GlyHUtVQSclMhSq9tnjuH5Jp9vixdZAwZdIezN' }
+
+
+//GET https://search.icons8.com/api/iconsets/v5/search?term=cart&token=YOUR_API_KEY
+//GET https://api-illustrations.icons8.com/api/v2/illustrations/search?query=example123&token=YOUR_API_KEY
+
+    const urls = {
+        icons: 'https://search.icons8.com/api/iconsets/v5/search?',
+        vectors: 'https://api-illustrations.icons8.com/api/v2/illustrations/search?'
+    }
+    const url = urls[req.params.key] + 'token=' + private_keys[req.params.key] + '&' + getParams(req.query)
+    console.log(url)
+    request.get(url, (err, result, body) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json(body)
+    })
+                   
+
+});
+
 //noun project
 app.get("/noun", (req, res, next) => {
     nounProject = new NounProject({
