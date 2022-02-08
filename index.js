@@ -57,7 +57,8 @@ const db = {
     get: function(callback, key, req) {
         const queries = {
             recent: async function() {
-                const q = `SELECT * FROM event WHERE ip = "${req.ip}" AND type="image" GROUP BY thumb ORDER BY timestamp DESC LIMIT 6`
+                const limit = req.params.limit ? req.params.limit : 3
+                const q = `SELECT * FROM event WHERE ip = "${req.ip}" AND type="image" GROUP BY thumb ORDER BY timestamp DESC LIMIT ${limit}`
                 console.log(q)
                 doSelect(q, callback)
             },
@@ -155,7 +156,7 @@ app.get("/trending", (req, res, next) => {
         res.send(data)
     }, 'trending')
 });
-app.get("/recent", (req, res, next) => {
+app.get("/recent/:limit", (req, res, next) => {
     db.get(function(data) {
         res.send(data)
     }, 'recent', req)
