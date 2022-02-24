@@ -7,12 +7,14 @@ module.exports = function(req, res, next) {
             vectors: 'https://api-illustrations.icons8.com/api/v2/illustrations/search?'
         }
         const url = urls['vectors'] + 'token=' + API_KEYS.icon8['vectors'] + '&' + getParams(req.query)
-        console.log('url: ', url)
         request.get(url, (err, result, body) => {
             if (err) {
                 res.send(err);
             }
-            res.json(body)
+            if(req.query.amount){
+              body = JSON.parse(body).illustrations.slice(0, req.query.amount)
+            }
+            res.json({ 'illustrations': body })
         })
     }
 
