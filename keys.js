@@ -27,6 +27,9 @@ const API_KEYS = {
     pixabay: {
       id: '25255963-ff7f09ad3f8979c67d594be06'
     },
+    unsplash: {
+      id: '7A21RlBwxnYWFwqpxwPaepIk6jrLXuO0wOxP_NyPpN0'
+    },
     mysql: {
         auth: {
             host: 'dcrhg4kh56j13bnu.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',

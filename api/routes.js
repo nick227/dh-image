@@ -5,6 +5,7 @@ const routes = [
   { name: '/synonyms/', fn: require('./synonyms') },
   { name: '/shutterstock/', fn: require('./shutterstock') },
   { name: '/iconFinder/', fn: require('./iconFinder') },
-  { name: '/pixabay/', fn: require('./pixabay') }
+  { name: '/pixabay/', fn: require('./pixabay') },
+  { name: '/pixabay/', fn: require('./unsplash') }
 ]
 module.exports = routes
