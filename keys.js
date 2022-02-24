@@ -24,6 +24,9 @@ const API_KEYS = {
       key: '78c7tZbI8CSUdcVjOGSpUiI0cFzOgh8xTjQtWjNvxDoxJFJKKubCCHDP2ki4uE7H',
       clientId: 'rCTCgOZx5yh3FdS3HmKHmz0ASOl71dSZbsGwi2FsVozhuEehcwaZ8zW7T9hK1sku'
     },
+    pixabay: {
+      id: '25255963-ff7f09ad3f8979c67d594be06'
+    },
     mysql: {
         auth: {
             host: 'dcrhg4kh56j13bnu.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
