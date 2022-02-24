@@ -6,7 +6,7 @@ module.exports = function(req, res, next) {
             icons: 'https://api-icons.icons8.com/publicApi/icons?',
             vectors: 'https://api-illustrations.icons8.com/api/v2/illustrations/search?'
         }
-        const url = urls['vectors'] + 'token=' + API_KEYS.icon8['vectors'] + '&' + getParams(req.query)
+        const url = urls['vectors'] + 'token=' + API_KEYS.icons8['vectors'] + '&' + getParams(req.query)
         request.get(url, (err, result, body) => {
             if (err) {
                 res.send(err);
