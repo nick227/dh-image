@@ -1,5 +1,5 @@
 const sstk = require('shutterstock-api');
-const API_KEYS = require('../keys')
+const API_KEYS = require('../keys');
 
 module.exports = function(req, res, next) {
     sstk.setAccessToken(API_KEYS.shutterstock.token);

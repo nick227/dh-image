@@ -20,6 +20,10 @@ const API_KEYS = {
       secret: 'ZYGGGipkTiXHw0Yj',
       token: 'v2/YUJpSEZuM3plNkU5SVQzWmhPU25wTUM4Vjk1N2ExSzEvMzIzNzI3NTk4L2N1c3RvbWVyLzQvWEk5aHpoOHc4WEFFemVDYzhkR2gyQS1FSWNxNVNpRlVhN05WSEJKV1FpUXYwbnlrWDJCQlgzVVoyNWd3OHhtR3JzWmlsMnlLQ3hFeU1xaGR1dFg5ckdaOXFDbmN6R3F3S093VHNkT1BQZUdRRVRya2FIRnBla21vYU9jRUdXTnhWb2V0d09DTzluS2pzOVFjdXFCOUhkanVlUFJOQ29MRlVjZ1FmRU1OS29Ha2E2dEYtRHlvMDJIU0lOejNZNGItNDRTeERxRlVZVllfS3BpM2JRQnExdy9rUU96VjF2RHRZZjdwcmkyWTJGdUlR'
     },
+    iconFinder: {
+      key: '78c7tZbI8CSUdcVjOGSpUiI0cFzOgh8xTjQtWjNvxDoxJFJKKubCCHDP2ki4uE7H',
+      clientId: 'rCTCgOZx5yh3FdS3HmKHmz0ASOl71dSZbsGwi2FsVozhuEehcwaZ8zW7T9hK1sku'
+    },
     mysql: {
         auth: {
             host: 'dcrhg4kh56j13bnu.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
