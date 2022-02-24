@@ -2,10 +2,12 @@ const request = require("request")
 const API_KEYS = require('../keys')
 module.exports = function(req, res, next) {
         const urls = {
-            icons: 'https://search.icons8.com/api/iconsets/v5/search?',
+            search: 'https://search.icons8.com/api/iconsets/v5/search?',
+            icons: 'https://api-icons.icons8.com/publicApi/icons?',
             vectors: 'https://api-illustrations.icons8.com/api/v2/illustrations/search?'
         }
-        const url = urls[req.params.key] + 'token=' + API_KEYS.icon8[req.params.key] + '&' + getParams(req.query)
+        const url = urls['vectors'] + 'token=' + API_KEYS.icon8['vectors'] + '&' + getParams(req.query)
+        console.log('url: ', url)
         request.get(url, (err, result, body) => {
             if (err) {
                 res.send(err);

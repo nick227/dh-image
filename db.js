@@ -95,7 +95,6 @@ const db = {
 
 function doSelect(q, callback) {
     try {
-        console.log(q)
         const conx = db.connect()
         conx.query(q, function(err, res, fields) {
             callback(res)

@@ -1,9 +1,9 @@
 const API_KEYS = {
     icon8: {
-        icons: '7c6b363c45b217cfd6fe280f4de7861691550354',
-        vectors: 'lDKfyPRkhwP9Zvx9iGuJOVXXIaotTU6umndAJwNF',
-        photos: 'Zy9WRJFistH6N5vQjKkoRSQjp7QCCpZx2eGfDUHe',
-        music: 'Z0GlyHUtVQSclMhSq9tnjuH5Jp9vixdZAwZdIezN'
+        icons: 'JTYQJXueyaOCBOQsh4LdyULCm6V7IWm3sKXe8PMz',
+        vectors: 'lRIxcvOT46lkv3PXVX4gJyOMiaDl8VkqWodcAHHn',
+        photos: 'wU7TdGdzJ2QNCtKCxS9pf7m80cweA07TQ5GFcCjN',
+        music: 'X2hgAqNuL5ZNVNm9kBE58tMfTqrogbtMKhnGpxN3'
     },
     noun: {
         key: '6fe5896299e4454da024e88e25d06dea',
