@@ -41,6 +41,21 @@ const API_KEYS = {
             password: 'fvz871p26r5wghnk',
             database: 'eepab774vfog2vyw'
         }
+    },
+    photoroom: {
+      key: 'beba932a86b7f941bf901143f784cbe047f390b0 '
+    },
+    removebg: {
+      key: 'vLihg1U4np6KsQw3SfURaryf'
+    },
+    slazzer: {
+      key: '321ba580a2974cd981e1b41fda4301d6'
+    },
+    cloudinary: {
+      name: 'dh-image',
+      key: '985388728134625',
+      secret: 'L8ayfH1cHBtRiZrUO-UczrKiL90',
+      environment: 'CLOUDINARY_URL=cloudinary://985388728134625:L8ayfH1cHBtRiZrUO-UczrKiL90@dh-image'
     }
 }
 

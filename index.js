@@ -62,7 +62,7 @@ const routes = require('./api/routes')
 for(var i = 0, length1 = routes.length; i < length1; i++){
     let params = routes[i]
     console.log('params', params)
-    app.get(params.name, function(req, res, next){
+    app[params.method](params.name, function(req, res, next){
         params.fn(req, res, next)
     })
 }
