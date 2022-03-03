@@ -9,26 +9,32 @@ const saveToCloudinary = require("./cloudinary.js")
 module.exports = function(req, res, next) {
     const url = req.body.url
     remove(url, function(data) {
-      req.body.url = 'data:image/png;base64,'+data
-      saveToCloudinary(req, res, next)
+        req.body.url = 'data:image/png;base64,' + data
+        saveToCloudinary(req, res, next)
     })
-}
-async function remove(url, callback) {
-        //const outputFile = path.resolve(__dirname, '../images/output.png')
-        const result = await removeBackgroundFromImageUrl({
-            url,
-            apiKey: API_KEYS.removebg.key
-            /*,
-            size: "regular",
-            type: "product",
-            outputFile
-            */
-       });
-        callback(result.base64img)
- 
-}
+    async function remove(url, callback) {
+        try {
+            //const outputFile = path.resolve(__dirname, '../images/output.png')
+            const result = await removeBackgroundFromImageUrl({
+                url,
+                apiKey: API_KEYS.removebg.key
+                /*,
+                size: "regular",
+                type: "product",
+                outputFile
+                */
+            });
+            callback(result.base64img)
+
+        } catch (err) {
+            res.send(err)
+
+        }
+
+    }
 
 
+}
 /*
         console.log(`File saved to ${outputFile}`);
         console.log(`${result.creditsCharged} credit(s) charged for this image`);
