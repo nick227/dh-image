@@ -32,7 +32,7 @@ const API_KEYS = {
     },
     google: {
       cx: 'ce09c1b45c4b19b81',
-      id: 'AIzaSyDqU18xl9Xk37ICa1MK-ol-KunMHiUl-Zs'
+      id: 'AIzaSyD7MLDqQbcTqURyrbhgQhFB2RJhtq4g_B4'
     },
     mysql: {
         auth: {
