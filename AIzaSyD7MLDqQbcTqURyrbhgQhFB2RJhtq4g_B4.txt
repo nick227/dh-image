@@ -1,0 +1,7 @@
+AIzaSyD7MLDqQbcTqURyrbhgQhFB2RJhtq4g_B4
+
+
+    google: {
+      cx: 'e739446a9c22341f9',
+      id: 'AIzaSyD7MLDqQbcTqURyrbhgQhFB2RJhtq4g_B4'
+    },
