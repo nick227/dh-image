@@ -31,8 +31,8 @@ const API_KEYS = {
       id: '7A21RlBwxnYWFwqpxwPaepIk6jrLXuO0wOxP_NyPpN0'
     },
     google: {
-      cx: 'e739446a9c22341f9',
-      id: 'AIzaSyD7MLDqQbcTqURyrbhgQhFB2RJhtq4g_B4'
+      cx: 'ce09c1b45c4b19b81',
+      id: 'AIzaSyDqU18xl9Xk37ICa1MK-ol-KunMHiUl-Zs'
     },
     mysql: {
         auth: {
